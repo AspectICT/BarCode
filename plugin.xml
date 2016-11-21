@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin 
+  xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+  xmlns:android="http://schemas.android.com/apk/res/android" id="aspect-barcode-plugin" version="1.0.0">
+  <name>Aspect Barcode Plugin</name>
+  <description>Barcode cordova plugin</description>
+  <license>Apache 2.0</license>
+  <keywords>cordova, barcode</keywords>
+  <engines>
+    <engine name="cordova-android" version=">=4.0.0" />
+  </engines>
+  <asset src="www/barcodeplugin.js" target="js/barcodeplugin.js"/>
+  <js-module src="www/barcodeplugin.js" name="barcodeplugin">
+    <clobbers target="barcodeplugin" />
+  </js-module>
+  <platform name="android">
+    <source-file src="src/android/BarcodePlugin.java" target-dir="src/com/plugin/barcode/" />
+    <source-file src="src/android/BarcodeReaderManager.java" target-dir="src/com/plugin/barcode/" />
+    <source-file src="src/android/IBarcodeReaderManager.java" target-dir="src/com/plugin/barcode/" />
+    <source-file src="src/android/CordovaProvider.java" target-dir="src/com/plugin/barcode/" />
+    <source-file src="src/android/Device.java" target-dir="src/com/plugin/barcode/" />
+
+    <config-file target="AndroidManifest.xml" parent="/manifest/">
+      <uses-permission android:name="com.symbol.emdk.permission.EMDK"/>
+    </config-file>
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+      <uses-library android:name="com.symbol.emdk" />
+    </config-file>
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="BarcodePlugin">
+        <param name="android-package" value="com.plugin.barcode.BarcodePlugin"/>
+      </feature>
+    </config-file>
+  </platform>
+</plugin>

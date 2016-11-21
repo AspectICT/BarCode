@@ -1,0 +1,267 @@
+package com.plugin.barcode;
+
+import com.symbol.emdk.EMDKManager;
+import com.symbol.emdk.barcode.BarcodeManager;
+import com.symbol.emdk.barcode.ScanDataCollection;
+import com.symbol.emdk.barcode.Scanner;
+import com.symbol.emdk.barcode.ScannerConfig;
+import com.symbol.emdk.barcode.ScannerException;
+import com.symbol.emdk.barcode.ScannerInfo;
+import com.symbol.emdk.barcode.ScannerResults;
+import com.symbol.emdk.barcode.StatusData;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.DataListener, Scanner.StatusListener, BarcodeManager.ScannerConnectionListener, IBarcodeReaderManager {
+
+    private EMDKManager _emdkManager;
+    private BarcodeManager _barcodeManager;
+    private Scanner _scanner;
+    private List<ScannerInfo> _deviceList = new ArrayList<ScannerInfo>();
+
+    private int _selectedIndex = 0;
+    private int _defaultIndex = 0;
+
+
+    BarcodeReaderManager() {
+
+    }
+
+    private void resetCurrentDevice() {
+        initializeScanner();
+        deInitializeScanner();
+    }
+
+    private void initializeScanner() {
+        if (_scanner == null) {
+
+            if ((_deviceList != null) && (_deviceList.size() != 0)) {
+                _scanner = _barcodeManager.getDevice(_deviceList.get(_selectedIndex));
+            } else {
+                //textViewStatus.setText("Status: " + "Failed to get the specified scanner device! Please close and restart the application.");
+                return;
+            }
+
+            if (_scanner != null) {
+
+                _scanner.addDataListener(this);
+                _scanner.addStatusListener(this);
+
+                try {
+                    _scanner.enable();
+                } catch (ScannerException e) {
+
+                    //textViewStatus.setText("Status: " + e.getMessage());
+                }
+            } else {
+                //  textViewStatus.setText("Status: " + "Failed to initialize the scanner device.");
+            }
+        }
+    }
+
+    private void deInitializeScanner() {
+        if (_scanner != null) {
+            try {
+                _scanner.cancelRead();
+                _scanner.disable();
+            } catch (ScannerException e) {
+                //textViewStatus.setText("Status: " + e.getMessage());
+            }
+            _scanner.removeDataListener(this);
+            _scanner.removeStatusListener(this);
+            try {
+                _scanner.release();
+            } catch (ScannerException e) {
+                //textViewStatus.setText("Status: " + e.getMessage());
+            }
+            _scanner = null;
+        }
+    }
+
+    @Override
+    public void onOpened(EMDKManager emdkManager) {
+        this._emdkManager = emdkManager;
+
+        // Acquire the barcode manager resources
+        _barcodeManager = (BarcodeManager) emdkManager.getInstance(EMDKManager.FEATURE_TYPE.BARCODE);
+
+        // Add connection listener
+        if (_barcodeManager != null) {
+            _barcodeManager.addConnectionListener(this);
+        }
+    }
+
+    public void setScannerDevice(int id) {
+        _selectedIndex = id;
+        resetCurrentDevice();
+    }
+
+    public List<Device> getAvailableDevices() {
+        List<Device> friendlyNameList = new ArrayList<Device>();
+        if (_barcodeManager != null) {
+            _deviceList = _barcodeManager.getSupportedDevicesInfo();
+            if ((_deviceList != null) && (_deviceList.size() != 0)) {
+                int index = 0;
+                for (ScannerInfo scnInfo : _deviceList) {
+                    friendlyNameList.add(new Device(index, scnInfo.getFriendlyName()));
+                    if (scnInfo.isDefaultScanner()) {
+                        _defaultIndex = index;
+                    }
+                    index++;
+                }
+            }
+        }
+        return friendlyNameList;
+    }
+
+    public void setConfig(ScannerConfig scannerConfig) throws Exception {
+        _scanner.setConfig(scannerConfig);
+        resetCurrentDevice();
+    }
+
+    public void start() throws Exception {
+        if (_scanner == null) {
+            initializeScanner();
+        }
+        if (_scanner != null) {
+            try {
+
+                if (_scanner.isEnabled()) {
+                    _scanner.read();
+                } else {
+                    throw new Exception("Device not Enabled");
+                }
+            } catch (Exception e) {
+                LogError(e);
+                throw e;
+            }
+        }
+    }
+
+    public void stop() throws ScannerException {
+        if (_scanner != null) {
+            try {
+                // Reset continuous flag
+                //bContinuousMode = false;
+                _scanner.cancelRead();
+            } catch (ScannerException e) {
+                LogError(e);
+                throw e;
+            }
+        }
+    }
+
+    private void LogError(Exception e){
+
+    }
+
+    @Override
+    public void onClosed() {
+        if (_emdkManager != null) {
+
+            // Remove connection listener
+            if (_barcodeManager != null) {
+                _barcodeManager.removeConnectionListener(this);
+                _barcodeManager = null;
+            }
+
+            // Release all the resources
+            _emdkManager.release();
+            _emdkManager = null;
+        }
+    }
+
+    @Override
+    public void onConnectionChange(ScannerInfo scannerInfo, BarcodeManager.ConnectionState connectionState) {
+        String scannerName = "";
+
+        String statusExtScanner = connectionState.toString();
+        String scannerNameExtScanner = scannerInfo.getFriendlyName();
+
+        if (_deviceList.size() != 0) {
+            scannerName = _deviceList.get(_selectedIndex).getFriendlyName();
+        }
+
+        if (scannerName.equalsIgnoreCase(scannerNameExtScanner)) {
+            switch (connectionState) {
+                case CONNECTED:
+                    resetCurrentDevice();
+                    break;
+                case DISCONNECTED:
+                    deInitializeScanner();
+                    break;
+            }
+
+            //status = scannerNameExtScanner + ":" + statusExtScanner;
+            //new MainActivity.AsyncStatusUpdate().execute(status);
+        } else {
+            //status =  statusString + " " + scannerNameExtScanner + ":" + statusExtScanner;
+            //new MainActivity.AsyncStatusUpdate().execute(status);
+        }
+    }
+
+    @Override
+    public void onData(ScanDataCollection scanDataCollection) {
+        if ((scanDataCollection != null) && (scanDataCollection.getResult() == ScannerResults.SUCCESS)) {
+            ArrayList<ScanDataCollection.ScanData> scanData = scanDataCollection.getScanData();
+            for (ScanDataCollection.ScanData data : scanData) {
+
+                String dataString = data.getData();
+
+                //
+            }
+        }
+    }
+
+    @Override
+    public void onStatus(StatusData statusData) {
+        StatusData.ScannerStates state = statusData.getState();
+        switch (state) {
+            case IDLE:
+                /*statusString = statusData.getFriendlyName()+" is enabled and idle...";
+                new MainActivity.AsyncStatusUpdate().execute(statusString);
+                if (bContinuousMode) {
+                    try {
+                        // An attempt to use the scanner continuously and rapidly (with a delay < 100 ms between scans)
+                        // may cause the scanner to pause momentarily before resuming the scanning.
+                        // Hence add some delay (>= 100ms) before submitting the next read.
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        scanner.read();
+                    } catch (ScannerException e) {
+                        statusString = e.getMessage();
+                        new MainActivity.AsyncStatusUpdate().execute(statusString);
+                    }
+                }
+                new MainActivity.AsyncUiControlUpdate().execute(true);*/
+                break;
+            case WAITING:
+                // statusString = "Scanner is waiting for trigger press...";
+                // new MainActivity.AsyncStatusUpdate().execute(statusString);
+                //new MainActivity.AsyncUiControlUpdate().execute(false);
+                break;
+            case SCANNING:
+                //statusString = "Scanning...";
+                // new MainActivity.AsyncStatusUpdate().execute(statusString);
+                //new MainActivity.AsyncUiControlUpdate().execute(false);
+                break;
+            case DISABLED:
+                // statusString = statusData.getFriendlyName()+" is disabled.";
+                //new MainActivity.AsyncStatusUpdate().execute(statusString);
+                //new MainActivity.AsyncUiControlUpdate().execute(true);
+                break;
+            case ERROR:
+                // statusString = "An error has occurred.";
+                // new MainActivity.AsyncStatusUpdate().execute(statusString);
+                // new MainActivity.AsyncUiControlUpdate().execute(true);
+                break;
+            default:
+                break;
+        }
+    }
+}
