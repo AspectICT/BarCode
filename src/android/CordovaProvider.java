@@ -10,7 +10,7 @@ public class CordovaProvider {
     private IBarcodeReaderManager _barcodeReaderManager;
 
     public void initialize(){
-        try {
+       /*try {
             _barcodeReaderManager = new BarcodeReaderManager();
             _barcodeReaderManager.getAvailableDevices();
             _barcodeReaderManager.setScannerDevice(1);
@@ -20,6 +20,6 @@ public class CordovaProvider {
         }
         catch (Exception ex){
 
-        }
+        }*/
     }
 }
