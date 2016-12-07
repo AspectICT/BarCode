@@ -6,5 +6,5 @@ android {
 }
 
 dependencies {
-    provided files('libs/com.symbol.emdk.jar')
+    compile files('libs/com.symbol.emdk.jar')
 }
