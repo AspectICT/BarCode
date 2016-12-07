@@ -1,4 +1,5 @@
-package com.symbol.barcodesample1.plugin;
+package com.plugin.barcode;
+
 
 /**
  * Created by Gerjan on 7-12-2016.
