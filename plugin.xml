@@ -14,6 +14,7 @@
     <clobbers target="barcodeplugin" />
   </js-module>
   <platform name="android">
+	<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
     <source-file src="src/android/BarcodePlugin.java" target-dir="src/com/plugin/barcode/" />
     <source-file src="src/android/BarcodeReaderManager.java" target-dir="src/com/plugin/barcode/" />
     <source-file src="src/android/IBarcodeReaderManager.java" target-dir="src/com/plugin/barcode/" />

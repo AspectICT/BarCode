@@ -64,8 +64,6 @@ module.exports = {
 			promise.resolve(res);
 		}, function(ex){
 			promise.reject(ex);
-			console.error("Achtergrond plugin: fout tijdens het laden");
-			console.error(ex);
 		}, "BarcodePlugin", "start", []);
 		return promise;
     }
