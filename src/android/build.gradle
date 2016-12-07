@@ -4,12 +4,7 @@ android {
     compileSdkVersion '"Symbol Technologies LLC":EMDK 5.0 (API 16):16'
     buildToolsVersion "23.0.2"
 }
-repositories {
-  flatDir{
-      dirs 'src/android/libs'
-  }
-}
 
 dependencies {
-	compile(name: 'com.symbol.emdk.jar', ext: 'jar')
+    provided files('libs/com.symbol.emdk.jar')
 }
