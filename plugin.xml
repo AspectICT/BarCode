@@ -25,7 +25,7 @@
     <source-file src="src/android/CordovaProvider.java" target-dir="src/com/plugin/barcode/" />
     <source-file src="src/android/BarcodePlugin.java" target-dir="src/com/plugin/barcode/" />
 
-    <config-file target="AndroidManifest.xml" parent="/manifest/">
+    <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="com.symbol.emdk.permission.EMDK" />
     </config-file>
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
