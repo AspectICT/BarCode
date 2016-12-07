@@ -24,7 +24,10 @@ public class BarcodePlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, org.apache.cordova.CallbackContext callbackContext) throws JSONException {
-        return getMethod(action, args, callbackContext);  // Returning false results in a "MethodNotFound" error.
+        if(action.equals("start")){
+            _cordovaProvider.start(callbackContext);
+        }
+        return true;
     }
 
     public boolean getMethod(String action, JSONArray args, org.apache.cordova.CallbackContext callbackContext) {
