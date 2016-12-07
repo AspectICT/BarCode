@@ -11,6 +11,5 @@ repositories {
 }
 
 dependencies {
-    provided fileTree(include: ['com.symbol.emdk.jar'], dir: 'src/android/libs')
-    compile fileTree(exclude: ['com.symbol.emdk.jar'], dir: 'src/android/libs')
+	compile(name: 'com.symbol.emdk.jar', ext: 'jar')
 }
