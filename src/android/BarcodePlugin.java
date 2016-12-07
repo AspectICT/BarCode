@@ -45,7 +45,7 @@ public class BarcodePlugin extends CordovaPlugin {
 
     @Override
     public void onDestroy() {
-        _cordovaProvider.onDestroy();
+       // _cordovaProvider.onDestroy();
         super.onDestroy();
     }
 }
