@@ -17,7 +17,7 @@ public class CordovaProvider {
     public CordovaProvider(CordovaInterface cordovaInterface){
         _cordovaInterface = cordovaInterface;
     }
-    public void start(org.apache.cordova.CallbackContext callbackContext){
+    public void start(final org.apache.cordova.CallbackContext callbackContext){
         try {
             _barcodeReaderManager = new BarcodeReaderManager(_cordovaInterface.getActivity());
             _barcodeReaderManager.setOnReadyCallback(new CallbackContext() {
