@@ -23,17 +23,17 @@ public class BarcodePlugin extends CordovaPlugin {
     }
 
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    public boolean execute(String action, JSONArray args, org.apache.cordova.CallbackContext callbackContext) throws JSONException {
         return getMethod(action, args, callbackContext);  // Returning false results in a "MethodNotFound" error.
     }
 
-    public boolean getMethod(String action, JSONArray args, CallbackContext callbackContext) {
+    public boolean getMethod(String action, JSONArray args, org.apache.cordova.CallbackContext callbackContext) {
         try {
             if (args.length() > 0) {
-                Method method = CordovaProvider.class.getDeclaredMethod(action, JSONArray.class, CallbackContext.class);
+                Method method = CordovaProvider.class.getDeclaredMethod(action, JSONArray.class, org.apache.cordova.CallbackContext.class);
                 method.invoke(_cordovaProvider, args, callbackContext);
             } else {
-                Method method = CordovaProvider.class.getDeclaredMethod(action, CallbackContext.class);
+                Method method = CordovaProvider.class.getDeclaredMethod(action, org.apache.cordova.CallbackContext.class);
                 method.invoke(_cordovaProvider, callbackContext);
             }
             return true;
