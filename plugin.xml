@@ -15,6 +15,7 @@
   </js-module>
   <platform name="android">
 	<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+	<resource-file src="src/android/libs/com.symbol.emdk.jar" target="libs/com.symbol.emdk.jar" />
 	<source-file src="src/android/IObserver.java" target-dir="src/com/plugin/barcode/" />
 	<source-file src="src/android/Device.java" target-dir="src/com/plugin/barcode/" />
 	<source-file src="src/android/CallbackContext.java" target-dir="src/com/plugin/barcode/" />
