@@ -4,8 +4,13 @@ android {
     compileSdkVersion '"Symbol Technologies LLC":EMDK 5.0 (API 16):16'
     buildToolsVersion "23.0.2"
 }
+repositories {
+  flatDir{
+      dirs 'src/android/libs'
+  }
+}
 
 dependencies {
-    provided fileTree(include: ['com.symbol.emdk.jar'], dir: 'C:\\Users\\Gerjan\\AppData\\Local\\Android\\sdk\\add-ons\\addon-symbol-emdk_v5.0-API-16\\libs')
-    compile fileTree(exclude: ['com.symbol.emdk.jar'], dir: 'libs')
+    provided fileTree(include: ['com.symbol.emdk.jar'], dir: 'src/android/libs')
+    compile fileTree(exclude: ['com.symbol.emdk.jar'], dir: 'src/android/libs')
 }
