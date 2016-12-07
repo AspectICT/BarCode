@@ -1,5 +1,6 @@
 package com.plugin.barcode;
 
+
 /**
  * Created by Gerjan on 11-11-2016.
  */

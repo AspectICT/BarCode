@@ -1,6 +1,10 @@
 package com.plugin.barcode;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.symbol.emdk.EMDKManager;
+import com.symbol.emdk.EMDKResults;
 import com.symbol.emdk.barcode.BarcodeManager;
 import com.symbol.emdk.barcode.ScanDataCollection;
 import com.symbol.emdk.barcode.Scanner;
@@ -19,13 +23,27 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     private BarcodeManager _barcodeManager;
     private Scanner _scanner;
     private List<ScannerInfo> _deviceList = new ArrayList<ScannerInfo>();
-
+    private IObserver _onReadyObserver;
+    private IObserver _onScanResultObserver;
+    private ScannerConfig _scannerConfig;
     private int _selectedIndex = 0;
     private int _defaultIndex = 0;
 
 
-    BarcodeReaderManager() {
-
+    public BarcodeReaderManager(Context context) {
+        EMDKResults results = EMDKManager.getEMDKManager(context, this);
+        if (results.statusCode != EMDKResults.STATUS_CODE.SUCCESS) {
+            Log.d(getClass().getSimpleName(), "Test");
+        }
+    }
+    public void setOnReadyCallback(IObserver observer){
+        _onReadyObserver = observer;
+    }
+    public void setOnScanResultCallback(IObserver observer){
+        _onScanResultObserver = observer;
+    }
+    public Scanner getScanner() {
+        return _scanner;
     }
 
     private void resetCurrentDevice() {
@@ -90,6 +108,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         if (_barcodeManager != null) {
             _barcodeManager.addConnectionListener(this);
         }
+        _onReadyObserver.onReady();
     }
 
     public void setScannerDevice(int id) {
@@ -116,13 +135,15 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     }
 
     public void setConfig(ScannerConfig scannerConfig) throws Exception {
-        _scanner.setConfig(scannerConfig);
-        resetCurrentDevice();
+        this._scannerConfig = scannerConfig;
+        //resetCurrentDevice();
     }
 
     public void start() throws Exception {
         if (_scanner == null) {
             initializeScanner();
+            _scanner.triggerType = Scanner.TriggerType.SOFT_ALWAYS;
+            _scanner.setConfig(_scannerConfig);
         }
         if (_scanner != null) {
             try {
@@ -158,8 +179,11 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
 
     @Override
     public void onClosed() {
-        if (_emdkManager != null) {
+       close();
+    }
 
+    public void close(){
+        if (_emdkManager != null) {
             // Remove connection listener
             if (_barcodeManager != null) {
                 _barcodeManager.removeConnectionListener(this);
@@ -208,7 +232,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
             for (ScanDataCollection.ScanData data : scanData) {
 
                 String dataString = data.getData();
-
+                this._onReadyObserver.onScanResult(dataString);
                 //
             }
         }
@@ -219,9 +243,6 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         StatusData.ScannerStates state = statusData.getState();
         switch (state) {
             case IDLE:
-                /*statusString = statusData.getFriendlyName()+" is enabled and idle...";
-                new MainActivity.AsyncStatusUpdate().execute(statusString);
-                if (bContinuousMode) {
                     try {
                         // An attempt to use the scanner continuously and rapidly (with a delay < 100 ms between scans)
                         // may cause the scanner to pause momentarily before resuming the scanning.
@@ -231,15 +252,11 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-
-                        scanner.read();
+                        _scanner.read();
                     } catch (ScannerException e) {
-                        statusString = e.getMessage();
-                        new MainActivity.AsyncStatusUpdate().execute(statusString);
+
                     }
-                }
-                new MainActivity.AsyncUiControlUpdate().execute(true);*/
-                break;
+                    break;
             case WAITING:
                 // statusString = "Scanner is waiting for trigger press...";
                 // new MainActivity.AsyncStatusUpdate().execute(statusString);

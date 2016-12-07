@@ -58,7 +58,7 @@ var Promise = (function () {
 })();
 // js interface to plugin
 module.exports = {
-	initialize: function () {
+	start: function () {
 		var promise = new Promise();
         cordova.exec(function(res){
 			promise.resolve();
@@ -66,7 +66,7 @@ module.exports = {
 			promise.reject(ex);
 			console.error("Achtergrond plugin: fout tijdens het laden");
 			console.error(ex);
-		}, "BarcodePlugin", "initialize", []);
+		}, "BarcodePlugin", "start", []);
 		return promise;
     }
 };
