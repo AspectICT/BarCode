@@ -15,13 +15,13 @@
   </js-module>
   <platform name="android">
 	<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
-    <source-file src="src/android/BarcodePlugin.java" target-dir="src/com/plugin/barcode/" />
-    <source-file src="src/android/BarcodeReaderManager.java" target-dir="src/com/plugin/barcode/" />
-    <source-file src="src/android/IBarcodeReaderManager.java" target-dir="src/com/plugin/barcode/" />
 	<source-file src="src/android/IObserver.java" target-dir="src/com/plugin/barcode/" />
+	<source-file src="src/android/Device.java" target-dir="src/com/plugin/barcode/" />
 	<source-file src="src/android/CallbackContext.java" target-dir="src/com/plugin/barcode/" />
+    <source-file src="src/android/IBarcodeReaderManager.java" target-dir="src/com/plugin/barcode/" />
+	<source-file src="src/android/BarcodeReaderManager.java" target-dir="src/com/plugin/barcode/" />
     <source-file src="src/android/CordovaProvider.java" target-dir="src/com/plugin/barcode/" />
-    <source-file src="src/android/Device.java" target-dir="src/com/plugin/barcode/" />
+    <source-file src="src/android/BarcodePlugin.java" target-dir="src/com/plugin/barcode/" />
 
     <config-file target="AndroidManifest.xml" parent="/manifest/">
       <uses-permission android:name="com.symbol.emdk.permission.EMDK"/>
