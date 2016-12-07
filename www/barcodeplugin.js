@@ -61,7 +61,7 @@ module.exports = {
 	start: function () {
 		var promise = new Promise();
         cordova.exec(function(res){
-			promise.resolve();
+			promise.resolve(res);
 		}, function(ex){
 			promise.reject(ex);
 			console.error("Achtergrond plugin: fout tijdens het laden");
