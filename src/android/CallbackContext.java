@@ -10,7 +10,7 @@ public abstract class CallbackContext  implements IObserver {
 
     }
 
-    public void OnScanResult(String data){
+    public void onScanResult(String data){
 
     }
 }
