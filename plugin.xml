@@ -30,7 +30,7 @@
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <uses-library android:name="com.symbol.emdk" android:required="false" />
+      <uses-library android:name="com.symbol.emdk" android:required="true" />
     </config-file>
 	
     <config-file target="res/xml/config.xml" parent="/*">
