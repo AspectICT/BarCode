@@ -64,6 +64,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                 try {
                     _scanner.enable();
                 } catch (ScannerException e) {
+                    e.printStackTrace();
                 }
             } else {
                 //  textViewStatus.setText("Status: " + "Failed to initialize the scanner device.");
@@ -77,14 +78,14 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                 _scanner.cancelRead();
                 _scanner.disable();
             } catch (ScannerException e) {
-
+                e.printStackTrace();
             }
             _scanner.removeDataListener(this);
             _scanner.removeStatusListener(this);
             try {
                 _scanner.release();
             } catch (ScannerException e) {
-
+                e.printStackTrace();
             }
             _scanner = null;
         }
@@ -146,6 +147,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                     throw new Exception("Device not Enabled");
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 throw e;
             }
         }
@@ -156,6 +158,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
             try {
                 _scanner.cancelRead();
             } catch (ScannerException e) {
+                e.printStackTrace();
                 throw e;
             }
         }
@@ -228,7 +231,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                         }
                         _scanner.read();
                     } catch (ScannerException e) {
-
+                        e.printStackTrace();
                     }
                     break;
             case WAITING:
