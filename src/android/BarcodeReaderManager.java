@@ -38,9 +38,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     public void setOnReadyCallback(IObserver observer){
         _onReadyObserver = observer;
     }
-    public void setOnScanResultCallback(IObserver observer){
-        _onScanResultObserver = observer;
-    }
+    
     public Scanner getScanner() {
         return _scanner;
     }
