@@ -135,6 +135,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     public void start() throws Exception {
         if (_scanner == null) {
             initializeScanner();
+            _scannerConfig = _scanner.getConfig();
             _scanner.triggerType = Scanner.TriggerType.SOFT_ALWAYS;
             _scanner.setConfig(_scannerConfig);
         }
