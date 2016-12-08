@@ -232,24 +232,12 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                     }
                     break;
             case WAITING:
-                // statusString = "Scanner is waiting for trigger press...";
-                // new MainActivity.AsyncStatusUpdate().execute(statusString);
-                //new MainActivity.AsyncUiControlUpdate().execute(false);
                 break;
             case SCANNING:
-                //statusString = "Scanning...";
-                // new MainActivity.AsyncStatusUpdate().execute(statusString);
-                //new MainActivity.AsyncUiControlUpdate().execute(false);
                 break;
             case DISABLED:
-                // statusString = statusData.getFriendlyName()+" is disabled.";
-                //new MainActivity.AsyncStatusUpdate().execute(statusString);
-                //new MainActivity.AsyncUiControlUpdate().execute(true);
                 break;
             case ERROR:
-                // statusString = "An error has occurred.";
-                // new MainActivity.AsyncStatusUpdate().execute(statusString);
-                // new MainActivity.AsyncUiControlUpdate().execute(true);
                 break;
             default:
                 break;
