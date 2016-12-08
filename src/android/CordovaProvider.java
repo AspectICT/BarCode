@@ -23,7 +23,7 @@ public class CordovaProvider {
     public void start(final org.apache.cordova.CallbackContext callbackContext){
         try {
             _barcodeReaderManager = new BarcodeReaderManager(_cordovaInterface.getActivity());
-
+            Log.d(getClass().getSimpleName(), "Loaded");
             _barcodeReaderManager.setOnReadyCallback(new CallbackContext() {
                 @Override
                 public void onReady() {
