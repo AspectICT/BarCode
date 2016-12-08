@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile files('libs/com.symbol.emdk.jar')
+     provided files('libs/com.symbol.emdk.jar')
 }
