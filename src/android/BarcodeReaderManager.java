@@ -32,7 +32,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     public BarcodeReaderManager(Context context) {
         EMDKResults results = EMDKManager.getEMDKManager(context, this);
         if (results.statusCode != EMDKResults.STATUS_CODE.SUCCESS) {
-            Log.d(getClass().getSimpleName(), "Test");
+            Log.d(getClass().getSimpleName(), "Found EMDK EMDKResults.STATUS_CODE.SUCCESS");
         }
     }
     public void setOnReadyCallback(IObserver observer){
@@ -183,7 +183,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     @Override
     public void onConnectionChange(ScannerInfo scannerInfo, BarcodeManager.ConnectionState connectionState) {
         String scannerName = "";
-
+        Log.d(getClass().getSimpleName(), "Connection Change: " + connectionState);
         String statusExtScanner = connectionState.toString();
         String scannerNameExtScanner = scannerInfo.getFriendlyName();
 
