@@ -28,9 +28,11 @@
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="com.symbol.emdk.permission.EMDK" />
     </config-file>
+	<!--
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <uses-library android:name="com.symbol.emdk" />
     </config-file>
+	-->
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="BarcodePlugin">
         <param name="android-package" value="com.plugin.barcode.BarcodePlugin" />
