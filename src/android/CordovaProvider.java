@@ -28,6 +28,7 @@ public class CordovaProvider {
                 @Override
                 public void onReady() {
                     Log.d(getClass().getSimpleName(), "Sensor Ready");
+                    _barcodeReaderManager.getAvailableDevices();
                     _barcodeReaderManager.setScannerDevice(1);
                     try {
                         Log.d(getClass().getSimpleName(), "Starting Scan...");
