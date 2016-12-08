@@ -93,7 +93,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     @Override
     public void onOpened(EMDKManager emdkManager) {
         this._emdkManager = emdkManager;
-
+        Log.d(getClass().getSimpleName(), "Connected To EMDK");
         // Acquire the barcode manager resources
         _barcodeManager = (BarcodeManager) emdkManager.getInstance(EMDKManager.FEATURE_TYPE.BARCODE);
 
