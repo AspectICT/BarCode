@@ -24,7 +24,6 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     private Scanner _scanner;
     private List<ScannerInfo> _deviceList = new ArrayList<ScannerInfo>();
     private IObserver _onReadyObserver;
-    private IObserver _onScanResultObserver;
     private ScannerConfig _scannerConfig;
     private int _selectedIndex = 0;
     private int _defaultIndex = 0;
@@ -57,20 +56,16 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
             if ((_deviceList != null) && (_deviceList.size() != 0)) {
                 _scanner = _barcodeManager.getDevice(_deviceList.get(_selectedIndex));
             } else {
-                //textViewStatus.setText("Status: " + "Failed to get the specified scanner device! Please close and restart the application.");
-                return;
+               return;
             }
 
             if (_scanner != null) {
-
                 _scanner.addDataListener(this);
                 _scanner.addStatusListener(this);
 
                 try {
                     _scanner.enable();
                 } catch (ScannerException e) {
-
-                    //textViewStatus.setText("Status: " + e.getMessage());
                 }
             } else {
                 //  textViewStatus.setText("Status: " + "Failed to initialize the scanner device.");
@@ -84,14 +79,14 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                 _scanner.cancelRead();
                 _scanner.disable();
             } catch (ScannerException e) {
-                //textViewStatus.setText("Status: " + e.getMessage());
+
             }
             _scanner.removeDataListener(this);
             _scanner.removeStatusListener(this);
             try {
                 _scanner.release();
             } catch (ScannerException e) {
-                //textViewStatus.setText("Status: " + e.getMessage());
+
             }
             _scanner = null;
         }
@@ -136,7 +131,6 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
 
     public void setConfig(ScannerConfig scannerConfig) throws Exception {
         this._scannerConfig = scannerConfig;
-        //resetCurrentDevice();
     }
 
     public void start() throws Exception {
@@ -154,7 +148,6 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                     throw new Exception("Device not Enabled");
                 }
             } catch (Exception e) {
-                LogError(e);
                 throw e;
             }
         }
@@ -163,18 +156,11 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     public void stop() throws ScannerException {
         if (_scanner != null) {
             try {
-                // Reset continuous flag
-                //bContinuousMode = false;
                 _scanner.cancelRead();
             } catch (ScannerException e) {
-                LogError(e);
                 throw e;
             }
         }
-    }
-
-    private void LogError(Exception e){
-
     }
 
     @Override
@@ -216,12 +202,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                     deInitializeScanner();
                     break;
             }
-
-            //status = scannerNameExtScanner + ":" + statusExtScanner;
-            //new MainActivity.AsyncStatusUpdate().execute(status);
         } else {
-            //status =  statusString + " " + scannerNameExtScanner + ":" + statusExtScanner;
-            //new MainActivity.AsyncStatusUpdate().execute(status);
         }
     }
 
@@ -230,10 +211,8 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         if ((scanDataCollection != null) && (scanDataCollection.getResult() == ScannerResults.SUCCESS)) {
             ArrayList<ScanDataCollection.ScanData> scanData = scanDataCollection.getScanData();
             for (ScanDataCollection.ScanData data : scanData) {
-
                 String dataString = data.getData();
                 this._onReadyObserver.onScanResult(dataString);
-                //
             }
         }
     }
@@ -244,9 +223,6 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         switch (state) {
             case IDLE:
                     try {
-                        // An attempt to use the scanner continuously and rapidly (with a delay < 100 ms between scans)
-                        // may cause the scanner to pause momentarily before resuming the scanning.
-                        // Hence add some delay (>= 100ms) before submitting the next read.
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
