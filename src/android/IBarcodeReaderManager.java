@@ -14,7 +14,6 @@ import java.util.List;
 public interface IBarcodeReaderManager {
     void close();
     void setOnReadyCallback(IObserver observer);
-    void setOnScanResultCallback(IObserver observer);
     void setScannerDevice(int id);
     List<Device> getAvailableDevices();
     void start() throws Exception;
