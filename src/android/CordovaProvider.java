@@ -34,6 +34,7 @@ public class CordovaProvider {
                         _barcodeReaderManager.start();
                     } catch (Exception ex) {
                         Log.e(getClass().getSimpleName(), ex.toString());
+                         ex.printStackTrace();
                         callbackContext.error(ex.getMessage());
                     }
                 }
