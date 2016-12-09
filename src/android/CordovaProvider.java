@@ -20,6 +20,18 @@ public class CordovaProvider {
     public CordovaProvider(CordovaInterface cordovaInterface){
         _cordovaInterface = cordovaInterface;
     }
+    public void stop(final org.apache.cordova.CallbackContext callbackContext){
+         try {
+                        
+                        Log.d(getClass().getSimpleName(), "Stopping scan...: " + data);
+                        _barcodeReaderManager.stop();
+                        _barcodeReaderManager.close();
+                        callbackContext.success();
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        callbackContext.error(ex.getMessage());
+                    }
+    }
     public void start(final org.apache.cordova.CallbackContext callbackContext){
         try {
             _barcodeReaderManager = new BarcodeReaderManager(_cordovaInterface.getActivity());
