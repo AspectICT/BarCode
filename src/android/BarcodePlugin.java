@@ -26,6 +26,8 @@ public class BarcodePlugin extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, org.apache.cordova.CallbackContext callbackContext) throws JSONException {
         if(action.equals("start")){
             _cordovaProvider.start(callbackContext);
+        }else if(action.equals("stop")){
+            _cordovaProvider.stop(callbackContext);
         }
         return true;
     }
