@@ -66,5 +66,14 @@ module.exports = {
 			promise.reject(ex);
 		}, "BarcodePlugin", "start", []);
 		return promise;
+    },
+	stop: function () {
+		var promise = new Promise();
+        cordova.exec(function(){
+			promise.resolve();
+		}, function(ex){
+			promise.reject(ex);
+		}, "BarcodePlugin", "stop", []);
+		return promise;
     }
 };
