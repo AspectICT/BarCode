@@ -33,6 +33,9 @@ public class BarcodePlugin extends CordovaPlugin {
             case "stop":
                 _cordovaProvider.stop(callbackContext);
                 break;
+            case "onScanResult":
+                _cordovaProvider.onScanResult(callbackContext);
+                break;
         }
         return true;
     }

@@ -90,7 +90,7 @@ public class CordovaProvider {
         }
 
         public void onServiceDisconnected(ComponentName name) {
-
+            Log.d(getClass().getSimpleName(), "onServiceDisconnected: " + name);
         }
 
     };
