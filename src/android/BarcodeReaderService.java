@@ -22,8 +22,6 @@ public class BarcodeReaderService extends Service implements IObserver {
 
     @Override
     public void onCreate() {
-        _barcodeReaderManager = new BarcodeReaderManager(cordovaProvider.getCurrentContext());
-        _barcodeReaderManager.setOnReadyCallback(this);
         Log.d(getClass().getSimpleName(), "Service Created");
         super.onCreate();
     }
@@ -34,7 +32,12 @@ public class BarcodeReaderService extends Service implements IObserver {
         _barcodeReaderManager.setScannerDevice(1);
         Log.d(getClass().getSimpleName(), "Loaded");
     }
-
+    
+    public void initialize() {
+        _barcodeReaderManager = new BarcodeReaderManager(cordovaProvider.getCurrentContext());
+        _barcodeReaderManager.setOnReadyCallback(this);
+    }
+    
     public void start() throws Exception {
         _barcodeReaderManager.start();
         Log.d(getClass().getSimpleName(), "Started Scanning");
