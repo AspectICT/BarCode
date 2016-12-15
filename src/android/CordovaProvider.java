@@ -55,7 +55,14 @@ public class CordovaProvider {
     }
 
     public void initialize(org.apache.cordova.CallbackContext callbackContext){
-        callbackContext.success();
+        try {
+             _barcodeService.initialize();
+            callbackContext.success();
+        }
+        catch (Exception ex){
+            callbackContext.error(ex.toString());
+            ex.printStackTrace();
+        }
     }
 
     public void onScanResult(org.apache.cordova.CallbackContext callbackContext){
