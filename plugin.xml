@@ -31,6 +31,7 @@
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <uses-library android:name="com.symbol.emdk" android:required="true" />
+      <service android:name="com.plugin.barcode.BarcodeReaderService"></service>
     </config-file>
 	
     <config-file target="res/xml/config.xml" parent="/*">
