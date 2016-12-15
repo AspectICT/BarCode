@@ -23,19 +23,14 @@ public class BarcodePlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, org.apache.cordova.CallbackContext callbackContext) throws JSONException {
-        switch (action) {
-            case "initialize":
-                _cordovaProvider.initialize(callbackContext);
-                break;
-            case "start":
-                _cordovaProvider.start(callbackContext);
-                break;
-            case "stop":
-                _cordovaProvider.stop(callbackContext);
-                break;
-            case "onScanResult":
-                _cordovaProvider.onScanResult(callbackContext);
-                break;
+         if (action.equals("initialize")) {
+            _cordovaProvider.initialize(callbackContext);
+        } else if (action.equals("start")) {
+            _cordovaProvider.start(callbackContext);
+        } else if (action.equals("stop")) {
+            _cordovaProvider.stop(callbackContext);
+        } else if (action.equals("onScanResult")) {
+            _cordovaProvider.onScanResult(callbackContext);
         }
         return true;
     }
