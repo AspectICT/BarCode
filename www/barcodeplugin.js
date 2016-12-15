@@ -60,8 +60,8 @@ var Promise = (function () {
 module.exports = {
 	start: function () {
 		var promise = new Promise();
-        cordova.exec(function(res){
-			promise.resolve(res);
+        cordova.exec(function(){
+			promise.resolve();
 		}, function(ex){
 			promise.reject(ex);
 		}, "BarcodePlugin", "start", []);
@@ -74,6 +74,24 @@ module.exports = {
 		}, function(ex){
 			promise.reject(ex);
 		}, "BarcodePlugin", "stop", []);
+		return promise;
+    },
+	initialize: function () {
+		var promise = new Promise();
+        cordova.exec(function(){
+			promise.resolve();
+		}, function(ex){
+			promise.reject(ex);
+		}, "BarcodePlugin", "initialize", []);
+		return promise;
+    },
+	onScanResult: function () {
+		var promise = new Promise();
+        cordova.exec(function(res){
+			promise.resolve(res);
+		}, function(ex){
+			promise.reject(ex);
+		}, "BarcodePlugin", "onScanResult", []);
 		return promise;
     }
 };

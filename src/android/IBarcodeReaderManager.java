@@ -18,6 +18,6 @@ public interface IBarcodeReaderManager {
     List<Device> getAvailableDevices();
     void start() throws Exception;
     void setConfig(ScannerConfig scannerConfig) throws Exception;
-    void stop() throws ScannerException;
+    void stop() throws ScannerException, Exception;
     Scanner getScanner();
 }

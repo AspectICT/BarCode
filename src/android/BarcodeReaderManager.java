@@ -27,6 +27,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     private ScannerConfig _scannerConfig;
     private int _selectedIndex = 0;
     private int _defaultIndex = 0;
+    private boolean ready = false;
 
 
     public BarcodeReaderManager(Context context) {
@@ -37,6 +38,9 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     }
     public void setOnReadyCallback(IObserver observer){
         _onReadyObserver = observer;
+        if(ready){
+            _onReadyObserver.onReady();
+        }
     }
     
     public Scanner getScanner() {
@@ -102,7 +106,10 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         if (_barcodeManager != null) {
             _barcodeManager.addConnectionListener(this);
         }
-        _onReadyObserver.onReady();
+        ready = true;
+        if(_onReadyObserver != null){
+            _onReadyObserver.onReady();
+        }
     }
 
     public void setScannerDevice(int id) {
@@ -154,7 +161,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         }
     }
 
-    public void stop() throws ScannerException {
+    public void stop() throws Exception {
         if (_scanner != null) {
             try {
                 _scanner.cancelRead();

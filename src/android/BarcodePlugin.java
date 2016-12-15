@@ -19,33 +19,22 @@ public class BarcodePlugin extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         _cordovaProvider = new CordovaProvider(cordova);
-
     }
 
     @Override
     public boolean execute(String action, JSONArray args, org.apache.cordova.CallbackContext callbackContext) throws JSONException {
-        if(action.equals("start")){
-            _cordovaProvider.start(callbackContext);
-        }else if(action.equals("stop")){
-            _cordovaProvider.stop(callbackContext);
+        switch (action) {
+            case "initialize":
+                _cordovaProvider.initialize(callbackContext);
+                break;
+            case "start":
+                _cordovaProvider.start(callbackContext);
+                break;
+            case "stop":
+                _cordovaProvider.stop(callbackContext);
+                break;
         }
         return true;
-    }
-
-    public boolean getMethod(String action, JSONArray args, org.apache.cordova.CallbackContext callbackContext) {
-        try {
-            if (args.length() > 0) {
-                Method method = CordovaProvider.class.getDeclaredMethod(action, JSONArray.class, org.apache.cordova.CallbackContext.class);
-                method.invoke(_cordovaProvider, args, callbackContext);
-            } else {
-                Method method = CordovaProvider.class.getDeclaredMethod(action, org.apache.cordova.CallbackContext.class);
-                method.invoke(_cordovaProvider, callbackContext);
-            }
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
     @Override

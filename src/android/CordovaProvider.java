@@ -1,10 +1,19 @@
 package com.plugin.barcode;
 
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.util.Log;
+
 import com.symbol.emdk.barcode.ScannerConfig;
+
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
+
 import java.util.List;
 
 /**
@@ -13,63 +22,76 @@ import java.util.List;
 
 public class CordovaProvider {
 
-    private IBarcodeReaderManager _barcodeReaderManager;
+
     private CordovaInterface _cordovaInterface;
+    private BarcodeReaderService _barcodeService;
+    private org.apache.cordova.CallbackContext _onScanResultCallbackContext;
 
-
-    public CordovaProvider(CordovaInterface cordovaInterface){
+    public CordovaProvider(CordovaInterface cordovaInterface) {
         _cordovaInterface = cordovaInterface;
+        Activity context = cordovaInterface.getActivity();
+        context.bindService(new Intent(context.getBaseContext(), BarcodeReaderService.class), mConnection, Context.BIND_AUTO_CREATE);
     }
-    public void stop(final org.apache.cordova.CallbackContext callbackContext) {
+
+
+
+    public void start(final org.apache.cordova.CallbackContext callbackContext) {
         try {
-            Log.d(getClass().getSimpleName(), "Stopping scan...: ");
-            _barcodeReaderManager.stop();
-            _barcodeReaderManager.close();
+            start(callbackContext);
             callbackContext.success();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            callbackContext.error(ex.getMessage());
-        }
-    }
-    public void start(final org.apache.cordova.CallbackContext callbackContext){
-        try {
-            _barcodeReaderManager = new BarcodeReaderManager(_cordovaInterface.getActivity());
-            Log.d(getClass().getSimpleName(), "Loaded");
-            _barcodeReaderManager.setOnReadyCallback(new CallbackContext() {
-                @Override
-                public void onReady() {
-                    Log.d(getClass().getSimpleName(), "Sensor Ready");
-                    _barcodeReaderManager.getAvailableDevices();
-                    _barcodeReaderManager.setScannerDevice(1);
-                    try {
-                        Log.d(getClass().getSimpleName(), "Starting Scan...");
-                        _barcodeReaderManager.start();
-                    } catch (Exception ex) {
-                        Log.e(getClass().getSimpleName(), ex.toString());
-                         ex.printStackTrace();
-                        callbackContext.error(ex.getMessage());
-                    }
-                }
-                @Override
-                public void onScanResult(String data) {
-                    try {
-                        Log.d(getClass().getSimpleName(), "ScanResult: " + data);
-                        PluginResult result = new PluginResult(PluginResult.Status.OK, data);
-                        result.setKeepCallback(true);
-                        callbackContext.sendPluginResult(result);
-                        Log.d(getClass().getSimpleName(), "Stopping scan...: " + data);
-                        _barcodeReaderManager.stop();
-                        _barcodeReaderManager.close();
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        callbackContext.error(ex.getMessage());
-                    }
-                }
-            });
         }
         catch (Exception ex){
+            callbackContext.error(ex.toString());
             ex.printStackTrace();
-            callbackContext.error(ex.getMessage());
         }
     }
+
+    public void stop(final org.apache.cordova.CallbackContext callbackContext) {
+        try {
+            stop(callbackContext);
+            callbackContext.success();
+        }
+        catch (Exception ex){
+            callbackContext.error(ex.toString());
+            ex.printStackTrace();
+        }
+    }
+
+    public void initialize(final org.apache.cordova.CallbackContext callbackContext){
+        callbackContext.success();
+    }
+
+    public void onScanResult(final org.apache.cordova.CallbackContext callbackContext){
+        _onScanResultCallbackContext = callbackContext;
+    }
+
+
+    public void onScanResult(String data) {
+        PluginResult result = new PluginResult(PluginResult.Status.OK, data);
+        result.setKeepCallback(true);
+        _onScanResultCallbackContext.sendPluginResult(result);
+        Log.d(getClass().getSimpleName(), "ScanResult: " + data);
+    }
+
+    public Context getCurrentContext(){
+        return _cordovaInterface.getActivity();
+    }
+
+    private void onServiceReady(BarcodeReaderService service) {
+        _barcodeService = service;
+        _barcodeService.cordovaProvider = this;
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            BarcodeReaderService.LocalBinder binder = (BarcodeReaderService.LocalBinder) service;
+            onServiceReady(binder.getService());
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+
+    };
 }
