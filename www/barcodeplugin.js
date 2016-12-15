@@ -93,5 +93,5 @@ module.exports = {
 			promise.reject(ex);
 		}, "BarcodePlugin", "onScanResult", []);
 		return promise;
-    }
+    } 
 };
