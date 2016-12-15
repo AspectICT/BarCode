@@ -34,7 +34,7 @@ public class CordovaProvider {
 
     public void start(org.apache.cordova.CallbackContext callbackContext) {
         try {
-            _barcodeService.start();
+          //  _barcodeService.start();
             callbackContext.success();
         }
         catch (Exception ex){
@@ -45,7 +45,7 @@ public class CordovaProvider {
 
     public void stop(org.apache.cordova.CallbackContext callbackContext) {
         try {
-            _barcodeService.start();
+          //  _barcodeService.start();
             callbackContext.success();
         }
         catch (Exception ex){
