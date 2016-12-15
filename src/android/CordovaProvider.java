@@ -32,7 +32,7 @@ public class CordovaProvider {
         context.bindService(new Intent(context.getBaseContext(), BarcodeReaderService.class), mConnection, Context.BIND_AUTO_CREATE);
     }
 
-    public void start(final org.apache.cordova.CallbackContext callbackContext) {
+    public void start(org.apache.cordova.CallbackContext callbackContext) {
         try {
             _barcodeService.start();
             callbackContext.success();
@@ -43,9 +43,9 @@ public class CordovaProvider {
         }
     }
 
-    public void stop(final org.apache.cordova.CallbackContext callbackContext) {
+    public void stop(org.apache.cordova.CallbackContext callbackContext) {
         try {
-            _barcodeService.stop();
+            _barcodeService.start();
             callbackContext.success();
         }
         catch (Exception ex){
@@ -54,11 +54,11 @@ public class CordovaProvider {
         }
     }
 
-    public void initialize(final org.apache.cordova.CallbackContext callbackContext){
+    public void initialize(org.apache.cordova.CallbackContext callbackContext){
         callbackContext.success();
     }
 
-    public void onScanResult(final org.apache.cordova.CallbackContext callbackContext){
+    public void onScanResult(org.apache.cordova.CallbackContext callbackContext){
         _onScanResultCallbackContext = callbackContext;
     }
 
