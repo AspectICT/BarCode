@@ -19,7 +19,7 @@ public class BarcodeReaderService extends Service implements IObserver {
     private final IBinder _mBinder = new LocalBinder();
     private IBarcodeReaderManager _barcodeReaderManager;
     public CordovaProvider cordovaProvider;
-    
+
     @Override
     public void onCreate() {
         _barcodeReaderManager = new BarcodeReaderManager(cordovaProvider.getCurrentContext());

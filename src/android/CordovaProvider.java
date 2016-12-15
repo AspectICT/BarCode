@@ -22,7 +22,6 @@ import java.util.List;
 
 public class CordovaProvider {
 
-
     private CordovaInterface _cordovaInterface;
     private BarcodeReaderService _barcodeService;
     private org.apache.cordova.CallbackContext _onScanResultCallbackContext;
@@ -33,11 +32,9 @@ public class CordovaProvider {
         context.bindService(new Intent(context.getBaseContext(), BarcodeReaderService.class), mConnection, Context.BIND_AUTO_CREATE);
     }
 
-
-
     public void start(final org.apache.cordova.CallbackContext callbackContext) {
         try {
-            start(callbackContext);
+            _barcodeService.start();
             callbackContext.success();
         }
         catch (Exception ex){
@@ -48,7 +45,7 @@ public class CordovaProvider {
 
     public void stop(final org.apache.cordova.CallbackContext callbackContext) {
         try {
-            stop(callbackContext);
+            _barcodeService.stop();
             callbackContext.success();
         }
         catch (Exception ex){
