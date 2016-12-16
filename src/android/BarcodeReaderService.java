@@ -39,11 +39,17 @@ public class BarcodeReaderService extends Service implements IObserver {
     }
     
     public void start() throws Exception {
+        if(_barcodeReaderManager == null){
+            initialize();
+        }
         _barcodeReaderManager.start();
         Log.d(getClass().getSimpleName(), "Started Scanning");
     }
 
     public void stop() throws Exception {
+        if(_barcodeReaderManager == null){
+            initialize();
+        }
         _barcodeReaderManager.stop();
         Log.d(getClass().getSimpleName(), "Stopped Scanning");
     }
