@@ -28,6 +28,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     private int _selectedIndex = 0;
     private int _defaultIndex = 0;
     private boolean ready = false;
+    private boolean _isScanning = false;
 
 
     public BarcodeReaderManager(Context context) {
@@ -140,6 +141,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     }
 
     public void start() throws Exception {
+        _isScanning = true;
         if (_scanner == null) {
             initializeScanner();
             _scannerConfig = _scanner.getConfig();
@@ -162,6 +164,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     }
 
     public void stop() throws Exception {
+        _isScanning = false;
         if (_scanner != null) {
             try {
                 _scanner.cancelRead();
@@ -231,15 +234,17 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         StatusData.ScannerStates state = statusData.getState();
         switch (state) {
             case IDLE:
-                    try {
+                    if(_isScanning) {
                         try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            _scanner.read();
+                        } catch (ScannerException e) {
                             e.printStackTrace();
                         }
-                        _scanner.read();
-                    } catch (ScannerException e) {
-                        e.printStackTrace();
                     }
                     break;
             case WAITING:
