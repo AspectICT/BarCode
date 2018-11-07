@@ -77,7 +77,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         }
     }
 
-    private void deInitializeScanner() {
+    public void deInitializeScanner() {
         if (_scanner != null) {
             try {
                 _scanner.cancelRead();

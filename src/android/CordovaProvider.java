@@ -65,10 +65,32 @@ public class CordovaProvider {
         }
     }
 
+    public void setDevice(org.apache.cordova.CallbackContext callbackContext, JSONArray args){
+        try {
+            int id = object.getJSONObject(0).getInt("id");
+             _barcodeService.setDevice(id);
+            callbackContext.success();
+        }
+        catch (Exception ex){
+            callbackContext.error(ex.toString());
+            ex.printStackTrace();
+        }
+    }
+
+    public void deInitialize(org.apache.cordova.CallbackContext callbackContext){
+        try {
+            _barcodeService.deInitialize();
+            callbackContext.success();
+        }
+        catch (Exception ex){
+            callbackContext.error(ex.toString());
+            ex.printStackTrace();
+        }
+    }
+
     public void onScanResult(org.apache.cordova.CallbackContext callbackContext){
         _onScanResultCallbackContext = callbackContext;
     }
-
 
     public void onScanResult(String data) {
         PluginResult result = new PluginResult(PluginResult.Status.OK, data);

@@ -92,6 +92,24 @@ module.exports = {
         }, "BarcodePlugin", "initialize", []);
         return promise;
     },
+	setDevice: function(device) {
+        var promise = new Promise();
+        cordova.exec(function() {
+            promise.resolve();
+        }, function(ex) {
+            promise.reject(ex);
+        }, "BarcodePlugin", "setDevice", [device]);
+        return promise;
+    },
+    deInitialize: function() {
+            var promise = new Promise();
+            cordova.exec(function() {
+                promise.resolve();
+            }, function(ex) {
+                promise.reject(ex);
+            }, "BarcodePlugin", "deInitialize", []);
+            return promise;
+    },
     onScanResult: function() {
         var promise = new Promise();
         cordova.exec(function(res) {
