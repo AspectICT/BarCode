@@ -20,4 +20,5 @@ public interface IBarcodeReaderManager {
     void setConfig(ScannerConfig scannerConfig) throws Exception;
     void stop() throws ScannerException, Exception;
     Scanner getScanner();
+    void deInitializeScanner();
 }
