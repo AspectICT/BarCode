@@ -67,7 +67,7 @@ public class CordovaProvider {
 
     public void setDevice(org.apache.cordova.CallbackContext callbackContext, JSONArray args){
         try {
-            int id = object.getJSONObject(0).getInt("id");
+            int id = args.getJSONObject(0).getInt("id");
              _barcodeService.setDevice(id);
             callbackContext.success();
         }
