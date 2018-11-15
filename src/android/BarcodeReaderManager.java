@@ -145,8 +145,12 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         if (_scanner == null) {
             initializeScanner();
             _scannerConfig = _scanner.getConfig();
-            _scanner.triggerType = Scanner.TriggerType.SOFT_ALWAYS;
+            _scanner.triggerType = Scanner.TriggerType.HARD;            
+            
+            // Dit is de parameter die ervoor zorgt dat barcode type Interleaved 2 of 5 enabled is, 
+            // dus geaccepteerd wordt door de scanner.
             _scannerConfig.decoderParams.i2of5.enabled = true;
+            
             _scanner.setConfig(_scannerConfig);
         }
         if (_scanner != null) {
