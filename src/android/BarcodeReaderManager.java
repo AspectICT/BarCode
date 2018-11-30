@@ -27,6 +27,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     private ScannerConfig _scannerConfig;
     private int _selectedIndex = 0;
     private int _defaultIndex = 0;
+    private String _triggerType = "hard";
     private boolean ready = false;
     private boolean _isScanning = false;
 
@@ -115,7 +116,10 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
 
     public void setScannerDevice(int id) {
         _selectedIndex = id;
-        resetCurrentDevice();
+    }
+
+    public void setTriggerType(String triggerType) {
+        _triggerType = triggerType.toLowerCase();
     }
 
     public List<Device> getAvailableDevices() {
@@ -145,8 +149,13 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         if (_scanner == null) {
             initializeScanner();
             _scannerConfig = _scanner.getConfig();
-            _scanner.triggerType = Scanner.TriggerType.HARD;            
-            
+            if(_triggerType == "hard") {
+                _scanner.triggerType = Scanner.TriggerType.HARD;
+            } else if(_triggerType == "soft_once") {
+                _scanner.triggerType = Scanner.TriggerType.SOFT_ONCE;
+            } else if(_triggerType == "soft_always") {
+                _scanner.triggerType = Scanner.TriggerType.SOFT_ALWAYS;
+            }
             // Dit is de parameter die ervoor zorgt dat barcode type Interleaved 2 of 5 enabled is, 
             // dus geaccepteerd wordt door de scanner.
             _scannerConfig.decoderParams.i2of5.enabled = true;

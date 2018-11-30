@@ -15,6 +15,7 @@ public interface IBarcodeReaderManager {
     void close();
     void setOnReadyCallback(IObserver observer);
     void setScannerDevice(int id);
+    void setTriggerType(String triggerType);
     List<Device> getAvailableDevices();
     void start() throws Exception;
     void setConfig(ScannerConfig scannerConfig) throws Exception;

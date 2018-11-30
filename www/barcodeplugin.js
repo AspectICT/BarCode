@@ -92,23 +92,32 @@ module.exports = {
         }, "BarcodePlugin", "initialize", []);
         return promise;
     },
-	setDevice: function(device) {
+	initializeScanner: function() {
         var promise = new Promise();
         cordova.exec(function() {
             promise.resolve();
         }, function(ex) {
             promise.reject(ex);
-        }, "BarcodePlugin", "setDevice", [device]);
+        }, "BarcodePlugin", "initializeScanner", []);
         return promise;
     },
-    deInitialize: function() {
-            var promise = new Promise();
-            cordova.exec(function() {
-                promise.resolve();
-            }, function(ex) {
-                promise.reject(ex);
-            }, "BarcodePlugin", "deInitialize", []);
-            return promise;
+	setConfig: function(config) {
+        var promise = new Promise();
+        cordova.exec(function() {
+            promise.resolve();
+        }, function(ex) {
+            promise.reject(ex);
+        }, "BarcodePlugin", "setConfig", [config]);
+        return promise;
+    },
+    deInitializeScanner: function() {
+		var promise = new Promise();
+		cordova.exec(function() {
+			promise.resolve();
+		}, function(ex) {
+			promise.reject(ex);
+		}, "BarcodePlugin", "deInitializeScanner", []);
+		return promise;
     },
     onScanResult: function() {
         var promise = new Promise();

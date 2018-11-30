@@ -32,8 +32,9 @@ public class BarcodeReaderService extends Service implements IObserver {
         Log.d(getClass().getSimpleName(), "Loaded");
     }
     
-    public void setDevice(int index) {
-        _barcodeReaderManager.setScannerDevice(index);
+    public void setConfig(int deviceIndex, String triggerType) {
+        _barcodeReaderManager.setScannerDevice(deviceIndex);
+        _barcodeReaderManager.setTriggerType(triggerType);
     }
 
     public void initialize() {

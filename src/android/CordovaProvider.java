@@ -25,11 +25,26 @@ public class CordovaProvider {
     private CordovaInterface _cordovaInterface;
     private BarcodeReaderService _barcodeService;
     private org.apache.cordova.CallbackContext _onScanResultCallbackContext;
+    private org.apache.cordova.CallbackContext _onReadyCallbackContext;
 
     public CordovaProvider(CordovaInterface cordovaInterface) {
         _cordovaInterface = cordovaInterface;
         Activity context = cordovaInterface.getActivity();
         context.bindService(new Intent(context.getBaseContext(), BarcodeReaderService.class), mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    public void initialize(org.apache.cordova.CallbackContext callbackContext){
+        try {
+            if(_barcodeService != null) {
+                callbackContext.success();
+            } else {
+                _onReadyCallbackContext = callbackContext;
+            }
+        }
+        catch (Exception ex){
+            callbackContext.error(ex.toString());
+            ex.printStackTrace();
+        }
     }
 
     public void start(org.apache.cordova.CallbackContext callbackContext) {
@@ -54,7 +69,7 @@ public class CordovaProvider {
         }
     }
 
-    public void initialize(org.apache.cordova.CallbackContext callbackContext){
+    public void initializeScanner(org.apache.cordova.CallbackContext callbackContext){
         try {
              _barcodeService.initialize();
             callbackContext.success();
@@ -65,10 +80,11 @@ public class CordovaProvider {
         }
     }
 
-    public void setDevice(org.apache.cordova.CallbackContext callbackContext, JSONArray args){
+    public void setConfig(org.apache.cordova.CallbackContext callbackContext, JSONArray args){
         try {
-            int id = args.getJSONObject(0).getInt("id");
-             _barcodeService.setDevice(id);
+            int id = args.getJSONObject(0).getInt("deviceIndex");
+            String triggerType = args.getJSONObject(0).getString("triggerType");
+             _barcodeService.setConfig(id, triggerType);
             callbackContext.success();
         }
         catch (Exception ex){
@@ -77,7 +93,7 @@ public class CordovaProvider {
         }
     }
 
-    public void deInitialize(org.apache.cordova.CallbackContext callbackContext){
+    public void deInitializeScanner(org.apache.cordova.CallbackContext callbackContext){
         try {
             _barcodeService.deInitialize();
             callbackContext.success();
@@ -106,6 +122,9 @@ public class CordovaProvider {
     private void onServiceReady(BarcodeReaderService service) {
         _barcodeService = service;
         _barcodeService.cordovaProvider = this;
+        if(_onReadyCallbackContext != null) {
+            _onReadyCallbackContext.success();
+        }
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
