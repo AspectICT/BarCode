@@ -55,6 +55,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     }
 
     private void initializeScanner() {
+         Log.d(getClass().getSimpleName(), "Scanner Initializing.....");
         if (_scanner == null) {
 
             if ((_deviceList != null) && (_deviceList.size() != 0)) {
