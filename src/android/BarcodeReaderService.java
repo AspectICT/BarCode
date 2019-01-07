@@ -44,7 +44,6 @@ public class BarcodeReaderService extends Service implements IObserver {
 
     public void deInitialize() {
         _barcodeReaderManager.deInitializeScanner();
-        _barcodeReaderManager = null;
     }
 
     public void start() throws Exception {
