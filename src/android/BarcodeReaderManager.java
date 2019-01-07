@@ -152,6 +152,10 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     }
 
     public void start() throws Exception {
+        if(_scanner == null) {
+            initializeScanner();
+        }
+        
         _isScanning = true;
         try 
         {
