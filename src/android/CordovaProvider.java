@@ -39,22 +39,23 @@ public class CordovaProvider {
     public void initialize(org.apache.cordova.CallbackContext callbackContext){
         try 
         {
-            Log.d(getClass().getSimpleName(), "initializing");
+            Log.d(getClass().getSimpleName(), "initializing CordovaProvider");
             
             // TEST 17-1-2019
             _barcodeService.initialize();
+            callbackContext.success();
 
-            if(_barcodeService != null) 
-            {
-                Log.d(getClass().getSimpleName(), "initializing barcodeService");
-                _barcodeService.initialize();
-                callbackContext.success();
-            } 
-            else 
-            {
-                Log.d(getClass().getSimpleName(), "barcodeService = NULL");
-                _onReadyCallbackContext = callbackContext;
-            }
+            // if(_barcodeService != null) 
+            // {
+            //     Log.d(getClass().getSimpleName(), "initializing barcodeService");
+            //     _barcodeService.initialize();
+            //     callbackContext.success();
+            // } 
+            // else 
+            // {
+            //     Log.d(getClass().getSimpleName(), "barcodeService = NULL");
+            //     _onReadyCallbackContext = callbackContext;
+            // }
         }
         catch (Exception ex){
             callbackContext.error(ex.toString());
