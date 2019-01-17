@@ -38,6 +38,7 @@ public class CordovaProvider {
         {
             if(_barcodeService != null) 
             {
+                _barcodeService.initialize();
                 callbackContext.success();
             } else 
             {
