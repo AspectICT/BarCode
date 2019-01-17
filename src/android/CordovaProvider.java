@@ -34,10 +34,13 @@ public class CordovaProvider {
     }
 
     public void initialize(org.apache.cordova.CallbackContext callbackContext){
-        try {
-            if(_barcodeService != null) {
+        try 
+        {
+            if(_barcodeService != null) 
+            {
                 callbackContext.success();
-            } else {
+            } else 
+            {
                 _onReadyCallbackContext = callbackContext;
             }
         }
@@ -48,7 +51,8 @@ public class CordovaProvider {
     }
 
     public void start(org.apache.cordova.CallbackContext callbackContext) {
-        try {
+        try 
+        {
             _barcodeService.start();
             callbackContext.success();
         }
@@ -59,32 +63,26 @@ public class CordovaProvider {
     }
 
     public void stop(org.apache.cordova.CallbackContext callbackContext) {
-        try {
+        try 
+        {
              _barcodeService.stop();
             callbackContext.success();
         }
-        catch (Exception ex){
+        catch (Exception ex)
+        {
             callbackContext.error(ex.toString());
             ex.printStackTrace();
         }
     }
 
-    public void initializeScanner(org.apache.cordova.CallbackContext callbackContext){
-        try {
-             _barcodeService.initialize();
-            callbackContext.success();
-        }
-        catch (Exception ex){
-            callbackContext.error(ex.toString());
-            ex.printStackTrace();
-        }
-    }
-
-    public void setConfig(org.apache.cordova.CallbackContext callbackContext, JSONArray args){
-        try {
-            int id = args.getJSONObject(0).getInt("deviceIndex");
+    public void initializeScanner(org.apache.cordova.CallbackContext callbackContext, JSONArray args)
+    {
+        try 
+        {
             String triggerType = args.getJSONObject(0).getString("triggerType");
-             _barcodeService.setConfig(id, triggerType);
+            int deviceId = args.getJSONObject(0).getInt("deviceId");
+
+            _barcodeService.initializeScanner(triggerType, deviceId);
             callbackContext.success();
         }
         catch (Exception ex){

@@ -24,8 +24,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     private Scanner _scanner;
     private List<ScannerInfo> _deviceList = new ArrayList<ScannerInfo>();
     private IObserver _onReadyObserver;
-    private ScannerConfig _scannerConfig;
-    private int _selectedIndex = 0;
+    private int _deviceId = 0;
     private int _defaultIndex = 0;
     private String _triggerType = "hard";
     private boolean ready = false;
@@ -45,61 +44,87 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         }
     }
     
-    public Scanner getScanner() {
+    public Scanner getScanner() 
+    {
         return _scanner;
     }
 
-    private void resetCurrentDevice() {
-        initializeScanner();
-        deInitializeScanner();
-    }
+    public void initializeScanner(String triggerType, int deviceId) 
+    {
+        triggerType = triggerType.toLowerCase();
+        _deviceId = deviceId;
 
-    private void initializeScanner() {
-         Log.d(getClass().getSimpleName(), "Scanner Initializing.....");
-        if (_scanner == null) {
+        Log.d(getClass().getSimpleName(), "Scanner Initializing. TriggerType=" + triggerType + ", deviceId=" + deviceId.toString());
 
-            if ((_deviceList != null) && (_deviceList.size() != 0)) {
-                _scanner = _barcodeManager.getDevice(_deviceList.get(_selectedIndex));
-            } else {
+        if (_scanner == null) 
+        {
+            if ((_deviceList != null) && (_deviceList.size() != 0)) 
+            {
+                _scanner = _barcodeManager.getDevice(_deviceList.get(deviceId));
+
+                if(triggerType == "hard") 
+                {
+                    _scanner.triggerType = Scanner.TriggerType.HARD;
+                } 
+                else if(triggerType == "soft_once") 
+                {
+                    _scanner.triggerType = Scanner.TriggerType.SOFT_ONCE;
+                } 
+                else if(triggerType == "soft_always") 
+                {
+                    _scanner.triggerType = Scanner.TriggerType.SOFT_ALWAYS;
+                }
+            } 
+            else 
+            {
                return;
             }
 
-            if (_scanner != null) {
-                _scanner.addDataListener(this);
-                _scanner.addStatusListener(this);
+            _scanner.addDataListener(this);
+            _scanner.addStatusListener(this);
 
-                try {
-                    _scanner.enable();
-                } catch (ScannerException e) {
-                    e.printStackTrace();
-                }
-                
-                Log.d(getClass().getSimpleName(), "Scanner Initialized");
-            } else {
-                Log.d(getClass().getSimpleName(), "Failed to initialize the scanner device.");
+            try 
+            {
+                _scanner.enable();
+            } catch (ScannerException e) 
+            {
+                e.printStackTrace();
             }
+            
+            Log.d(getClass().getSimpleName(), "Scanner Initialized!");
         }
     }
 
-    public void deInitializeScanner() {
-        if (_scanner != null) {
-            try {
+    public void deInitializeScanner() 
+    {
+        if (_scanner != null) 
+        {
+            try 
+            {
                 _scanner.cancelRead();
                 _scanner.disable();
-            } catch (ScannerException e) {
+            } 
+            catch (ScannerException e) 
+            {
                 e.printStackTrace();
             }
+            
             _scanner.removeDataListener(this);
             _scanner.removeStatusListener(this);
-            try {
+
+            try 
+            {
                 _scanner.release();
-            } catch (ScannerException e) {
+            } 
+            catch (ScannerException e) 
+            {
                 e.printStackTrace();
             }
             _scanner = null;
             
             Log.d(getClass().getSimpleName(), "Scanner deInitialized ");   
-        } else {
+        } else 
+        {
             Log.d(getClass().getSimpleName(), "Scanner is not found");   
         }
     }
@@ -121,14 +146,6 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         }
     }
 
-    public void setScannerDevice(int id) {
-        _selectedIndex = id;
-    }
-
-    public void setTriggerType(String triggerType) {
-        _triggerType = triggerType.toLowerCase();
-    }
-
     public List<Device> getAvailableDevices() {
         List<Device> friendlyNameList = new ArrayList<Device>();
         if (_barcodeManager != null) {
@@ -147,31 +164,18 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         return friendlyNameList;
     }
 
-    public void setConfig(ScannerConfig scannerConfig) throws Exception {
-        this._scannerConfig = scannerConfig;
-    }
-
-    public void start() throws Exception {
-        if(_scanner == null) {
-            initializeScanner();
-        }
-        
+    public void start() throws Exception 
+    {
         _isScanning = true;
         try 
         {
-            _scannerConfig = _scanner.getConfig();
-            if(_triggerType == "hard") {
-                _scanner.triggerType = Scanner.TriggerType.HARD;
-            } else if(_triggerType == "soft_once") {
-                _scanner.triggerType = Scanner.TriggerType.SOFT_ONCE;
-            } else if(_triggerType == "soft_always") {
-                _scanner.triggerType = Scanner.TriggerType.SOFT_ALWAYS;
-            }
+            var config = _scanner.getConfig();
+
             // Dit is de parameter die ervoor zorgt dat barcode type Interleaved 2 of 5 enabled is, 
             // dus geaccepteerd wordt door de scanner.
-            _scannerConfig.decoderParams.i2of5.enabled = true;
+            config.decoderParams.i2of5.enabled = true;
 
-            _scanner.setConfig(_scannerConfig);
+            _scanner.setConfig(config);
 
             if (_scanner.isEnabled()) {
                 _scanner.read();
@@ -180,13 +184,16 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
             }
             
             Log.d(getClass().getSimpleName(), "Started Scanning");   
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
             throw e;
         }
     }
 
-    public void stop() throws Exception {
+    public void stop() throws Exception 
+    {
         Log.d(getClass().getSimpleName(), "Stop Scanning"); 
         _isScanning = false;
         if (_scanner != null) {
@@ -204,7 +211,8 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
        close();
     }
 
-    public void close(){
+    public void close()
+    {
         if (_emdkManager != null) {
             // Remove connection listener
             if (_barcodeManager != null) {
@@ -226,13 +234,13 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         String scannerNameExtScanner = scannerInfo.getFriendlyName();
 
         if (_deviceList.size() != 0) {
-            scannerName = _deviceList.get(_selectedIndex).getFriendlyName();
+            scannerName = _deviceList.get(_deviceId).getFriendlyName();
         }
 
         if (scannerName.equalsIgnoreCase(scannerNameExtScanner)) {
             switch (connectionState) {
                 case CONNECTED:
-                    resetCurrentDevice();
+                    deInitializeScanner();
                     break;
                 case DISCONNECTED:
                     deInitializeScanner();
