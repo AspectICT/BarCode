@@ -15,7 +15,6 @@ public class BarcodePlugin extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         
-        Log.d(getClass().getSimpleName(), "initializing BarcodePlugin.initialize");
         _cordovaProvider = new CordovaProvider(cordova);
     }
 

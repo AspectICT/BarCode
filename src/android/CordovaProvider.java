@@ -27,7 +27,10 @@ public class CordovaProvider {
     private org.apache.cordova.CallbackContext _onScanResultCallbackContext;
     private org.apache.cordova.CallbackContext _onReadyCallbackContext;
 
-    public CordovaProvider(CordovaInterface cordovaInterface) {
+    public CordovaProvider(CordovaInterface cordovaInterface) 
+    {
+        Log.d(getClass().getSimpleName(), "CordovaProvider constructor");
+
         _cordovaInterface = cordovaInterface;
         Activity context = cordovaInterface.getActivity();
         context.bindService(new Intent(context.getBaseContext(), BarcodeReaderService.class), mConnection, Context.BIND_AUTO_CREATE);
