@@ -32,7 +32,8 @@ public class BarcodeReaderService extends Service implements IObserver {
         Log.d(getClass().getSimpleName(), "Loaded");
     }
     
-    public void initialize() {
+    public void initialize() 
+    {
         _barcodeReaderManager = new BarcodeReaderManager(cordovaProvider.getCurrentContext());
         _barcodeReaderManager.setOnReadyCallback(this);
     }
