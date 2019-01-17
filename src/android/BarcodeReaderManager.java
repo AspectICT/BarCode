@@ -31,15 +31,23 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     private boolean _isScanning = false;
 
 
-    public BarcodeReaderManager(Context context) {
+    public BarcodeReaderManager(Context context) 
+    {
+        Log.d(getClass().getSimpleName(), "BarcodeReaderManager constructor");
+
         EMDKResults results = EMDKManager.getEMDKManager(context, this);
-        if (results.statusCode != EMDKResults.STATUS_CODE.SUCCESS) {
+        if (results.statusCode != EMDKResults.STATUS_CODE.SUCCESS) 
+        {
             Log.d(getClass().getSimpleName(), "Found EMDK EMDKResults.STATUS_CODE.SUCCESS");
         }
+        Log.d(getClass().getSimpleName(), "Found EMDK, code=" + results.statusCode);
     }
-    public void setOnReadyCallback(IObserver observer){
+
+    public void setOnReadyCallback(IObserver observer)
+    {
         _onReadyObserver = observer;
-        if(ready){
+        if(ready)
+        {
             _onReadyObserver.onReady();
         }
     }
@@ -173,7 +181,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
             {
                 Log.d(getClass().getSimpleName(), "Waiting for scanner started up");
             }
-            
+
             ScannerConfig config = _scanner.getConfig();
 
             // Dit is de parameter die ervoor zorgt dat barcode type Interleaved 2 of 5 enabled is, 

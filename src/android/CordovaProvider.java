@@ -23,7 +23,7 @@ import java.util.List;
 public class CordovaProvider {
 
     private CordovaInterface _cordovaInterface;
-    private BarcodeReaderService _barcodeService;
+    private BarcodeReaderService _barcodeReaderService;
     private org.apache.cordova.CallbackContext _onScanResultCallbackContext;
     private org.apache.cordova.CallbackContext _onReadyCallbackContext;
 
@@ -41,11 +41,11 @@ public class CordovaProvider {
         {
             Log.d(getClass().getSimpleName(), "initializing CordovaProvider");
             
-            while (_barcodeService == null) 
+            while (_barcodeReaderService == null) 
             {
                 Log.d(getClass().getSimpleName(), "Waiting for barcodeService started up");
             }
-            _barcodeService.initialize();
+            _barcodeReaderService.initialize();
             callbackContext.success();
         }
         catch (Exception ex){
@@ -57,7 +57,7 @@ public class CordovaProvider {
     public void start(org.apache.cordova.CallbackContext callbackContext) {
         try 
         {
-            _barcodeService.start();
+            _barcodeReaderService.start();
             callbackContext.success();
         }
         catch (Exception ex){
@@ -69,7 +69,7 @@ public class CordovaProvider {
     public void stop(org.apache.cordova.CallbackContext callbackContext) {
         try 
         {
-             _barcodeService.stop();
+             _barcodeReaderService.stop();
             callbackContext.success();
         }
         catch (Exception ex)
@@ -86,7 +86,7 @@ public class CordovaProvider {
             String triggerType = args.getJSONObject(0).getString("triggerType");
             int deviceId = args.getJSONObject(0).getInt("deviceId");
 
-            _barcodeService.initializeScanner(triggerType, deviceId);
+            _barcodeReaderService.initializeScanner(triggerType, deviceId);
             callbackContext.success();
         }
         catch (Exception ex){
@@ -97,7 +97,7 @@ public class CordovaProvider {
 
     public void deInitializeScanner(org.apache.cordova.CallbackContext callbackContext){
         try {
-            _barcodeService.deInitialize();
+            _barcodeReaderService.deInitialize();
             callbackContext.success();
         }
         catch (Exception ex){
@@ -122,8 +122,8 @@ public class CordovaProvider {
     }
 
     private void onServiceReady(BarcodeReaderService service) {
-        _barcodeService = service;
-        _barcodeService.cordovaProvider = this;
+        _barcodeReaderService = service;
+        _barcodeReaderService.cordovaProvider = this;
         if(_onReadyCallbackContext != null) {
             _onReadyCallbackContext.success();
         }
