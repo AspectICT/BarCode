@@ -49,9 +49,12 @@ public class BarcodeReaderService extends Service implements IObserver {
     }
 
     public void start() throws Exception {
-        if(_barcodeReaderManager == null){
+        if(_barcodeReaderManager == null)
+        {
+            Log.d(getClass().getSimpleName(), "Initialize Service/BarcodeReaderManager");
             initialize();
         }
+        Log.d(getClass().getSimpleName(), "Start BarcodeReaderManager");
         _barcodeReaderManager.start();
         Log.d(getClass().getSimpleName(), "Started Scanning");
     }
