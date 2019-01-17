@@ -24,8 +24,6 @@ public class BarcodeReaderService extends Service implements IObserver {
     public void onCreate() {
         Log.d(getClass().getSimpleName(), "Service Created");
         super.onCreate();
-        
-        initialize();
     }
 
     @Override
