@@ -134,16 +134,18 @@ public class CordovaProvider {
         }
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
-
-        public void onServiceConnected(ComponentName className, IBinder service) {
+    private ServiceConnection mConnection = new ServiceConnection() 
+    {
+        public void onServiceConnected(ComponentName className, IBinder service) 
+        {
             BarcodeReaderService.LocalBinder binder = (BarcodeReaderService.LocalBinder) service;
+            Log.d(getClass().getSimpleName(), "onServiceReady");
             onServiceReady(binder.getService());
         }
 
-        public void onServiceDisconnected(ComponentName name) {
+        public void onServiceDisconnected(ComponentName name) 
+        {
             Log.d(getClass().getSimpleName(), "onServiceDisconnected: " + name);
         }
-
     };
 }
