@@ -54,7 +54,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         triggerType = triggerType.toLowerCase();
         _deviceId = deviceId;
 
-        Log.d(getClass().getSimpleName(), "Scanner Initializing. TriggerType=" + triggerType + ", deviceId=" + deviceId.toString());
+        Log.d(getClass().getSimpleName(), "Scanner Initializing. TriggerType=" + triggerType + ", deviceId=" + deviceId);
 
         if (_scanner == null) 
         {
@@ -108,7 +108,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
             {
                 e.printStackTrace();
             }
-            
+
             _scanner.removeDataListener(this);
             _scanner.removeStatusListener(this);
 
