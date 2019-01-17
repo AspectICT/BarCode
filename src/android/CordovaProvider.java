@@ -42,6 +42,10 @@ public class CordovaProvider {
             Log.d(getClass().getSimpleName(), "initializing CordovaProvider");
             
             // TEST 17-1-2019
+            while (_barcodeService == null) 
+            {
+                Log.d(getClass().getSimpleName(), "Waiting for barcodeService started up");
+            }
             _barcodeService.initialize();
             callbackContext.success();
 
