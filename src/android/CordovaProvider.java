@@ -40,6 +40,9 @@ public class CordovaProvider {
         try 
         {
             Log.d(getClass().getSimpleName(), "initializing");
+            
+            // TEST 17-1-2019
+            _barcodeService.initialize();
 
             if(_barcodeService != null) 
             {
