@@ -169,6 +169,11 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         _isScanning = true;
         try 
         {
+            while (_scanner == null) 
+            {
+                Log.d(getClass().getSimpleName(), "Waiting for scanner started up");
+            }
+            
             ScannerConfig config = _scanner.getConfig();
 
             // Dit is de parameter die ervoor zorgt dat barcode type Interleaved 2 of 5 enabled is, 
