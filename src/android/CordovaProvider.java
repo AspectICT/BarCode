@@ -41,10 +41,10 @@ public class CordovaProvider {
         {
             Log.d(getClass().getSimpleName(), "initializing plugin");
             
-            if(_barcodeService != null) 	
+            if(_barcodeReaderService != null) 	
             {	
                 Log.d(getClass().getSimpleName(), "initializing barcodeService");	
-                _barcodeService.initialize();	
+                _barcodeReaderService.initialize();	
                 callbackContext.success();	
             } 	
             else 	
@@ -133,6 +133,7 @@ public class CordovaProvider {
         if (_onReadyCallbackContext != null) {
             // PluginResult result = new PluginResult(PluginResult.Status.OK, null);
             //_onReadyCallbackContext.sendPluginResult(result);
+            _barcodeReaderService.initialize();
             _onReadyCallbackContext.success();
             Log.d(getClass().getSimpleName(), "Ready callback called");
         }
