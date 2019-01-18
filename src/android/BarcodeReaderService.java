@@ -29,12 +29,13 @@ public class BarcodeReaderService extends Service implements IObserver {
     @Override
     public void onReady() {
         _barcodeReaderManager.getAvailableDevices();
-        Log.d(getClass().getSimpleName(), "Loaded");
+        Log.d(getClass().getSimpleName(), "Devices loaded");
+        cordovaProvider.OnInitialized();
     }
     
     public void initialize() 
     {
-        Log.d(getClass().getSimpleName(), "initialize()");
+        Log.d(getClass().getSimpleName(), "Initializing...");
         _barcodeReaderManager = new BarcodeReaderManager(cordovaProvider.getCurrentContext());
         _barcodeReaderManager.setOnReadyCallback(this);
     }
