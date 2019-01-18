@@ -125,17 +125,21 @@ public class CordovaProvider {
     public Context getCurrentContext(){
         return _cordovaInterface.getActivity();
     }
+    
+    public void OnInitialized() {
+         Log.d(getClass().getSimpleName(), "Barcode Manager Initalized");
+         if (_onReadyCallbackContext != null) {
+            _onReadyCallbackContext.success();
+            Log.d(getClass().getSimpleName(), "Ready callback called");
+         }
+    }
 
     private void onServiceReady(BarcodeReaderService service) {
         _barcodeReaderService = service;
         _barcodeReaderService.cordovaProvider = this;
         
         if (_onReadyCallbackContext != null) {
-            // PluginResult result = new PluginResult(PluginResult.Status.OK, null);
-            //_onReadyCallbackContext.sendPluginResult(result);
             _barcodeReaderService.initialize();
-            _onReadyCallbackContext.success();
-            Log.d(getClass().getSimpleName(), "Ready callback called");
         }
     }
 
