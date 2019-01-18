@@ -41,10 +41,18 @@ public class CordovaProvider {
         {
             Log.d(getClass().getSimpleName(), "initializing CordovaProvider");
             
-            while (_barcodeReaderService == null) 
-            {
-                Log.d(getClass().getSimpleName(), "Waiting for barcodeService started up");
+            if(_barcodeService != null) 	
+            {	
+                Log.d(getClass().getSimpleName(), "initializing barcodeService");	
+                _barcodeService.initialize();	
+                callbackContext.success();	
+            } 	
+            else 	
+            {	
+                Log.d(getClass().getSimpleName(), "barcodeService = NULL");	
+                _onReadyCallbackContext = callbackContext;	
             }
+            
             _barcodeReaderService.initialize();
             callbackContext.success();
         }
@@ -124,8 +132,12 @@ public class CordovaProvider {
     private void onServiceReady(BarcodeReaderService service) {
         _barcodeReaderService = service;
         _barcodeReaderService.cordovaProvider = this;
-        if(_onReadyCallbackContext != null) {
+        
+        if (_onReadyCallbackContext != null) {
+            // PluginResult result = new PluginResult(PluginResult.Status.OK, null);
+            //_onReadyCallbackContext.sendPluginResult(result);
             _onReadyCallbackContext.success();
+            Log.d(getClass().getSimpleName(), "Ready callback called");
         }
     }
 
