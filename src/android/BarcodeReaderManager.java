@@ -70,17 +70,16 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
             {
                 _scanner = _barcodeManager.getDevice(_deviceList.get(deviceId));
 
-                if(triggerType == "hard") 
-                {
-                    _scanner.triggerType = Scanner.TriggerType.HARD;
-                } 
-                else if(triggerType == "soft_once") 
-                {
-                    _scanner.triggerType = Scanner.TriggerType.SOFT_ONCE;
-                } 
-                else if(triggerType == "soft_always") 
-                {
-                    _scanner.triggerType = Scanner.TriggerType.SOFT_ALWAYS;
+                switch (triggerType) {
+                    case "hard":
+                        _scanner.triggerType = Scanner.TriggerType.HARD;
+                        break;
+                    case "soft_once":
+                        _scanner.triggerType = Scanner.TriggerType.SOFT_ONCE;
+                        break;
+                    case "soft_always":
+                        _scanner.triggerType = Scanner.TriggerType.SOFT_ALWAYS;
+                        break;
                 }
             } 
             else 
