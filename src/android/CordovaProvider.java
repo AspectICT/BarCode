@@ -39,7 +39,7 @@ public class CordovaProvider {
     public void initialize(org.apache.cordova.CallbackContext callbackContext){
         try 
         {
-            Log.d(getClass().getSimpleName(), "initializing CordovaProvider");
+            Log.d(getClass().getSimpleName(), "initializing plugin");
             
             if(_barcodeService != null) 	
             {	
@@ -49,12 +49,9 @@ public class CordovaProvider {
             } 	
             else 	
             {	
-                Log.d(getClass().getSimpleName(), "barcodeService = NULL");	
+                Log.d(getClass().getSimpleName(), "Setting callback");	
                 _onReadyCallbackContext = callbackContext;	
             }
-            
-            _barcodeReaderService.initialize();
-            callbackContext.success();
         }
         catch (Exception ex){
             callbackContext.error(ex.toString());
