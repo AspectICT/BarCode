@@ -24,7 +24,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     private Scanner _scanner;
     private List<ScannerInfo> _deviceList = new ArrayList<ScannerInfo>();
     private IObserver _onReadyObserver;
-    private int _deviceId = 0;
+    private int _deviceId = 1;
     private boolean ready = false;
     private boolean _isScanning = false;
     private String _triggerType;
