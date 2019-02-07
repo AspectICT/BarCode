@@ -251,7 +251,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         if ((scanDataCollection != null) && (scanDataCollection.getResult() == ScannerResults.SUCCESS)) {
             ArrayList<ScanDataCollection.ScanData> scanData = scanDataCollection.getScanData();
             for (ScanDataCollection.ScanData data : scanData) {
-                String dataString = data.getData();
+                String dataString = new String(data.GetRawData(), Charset.forName("UTF-8")); // data.getData();
                 this._onReadyObserver.onScanResult(dataString);
             }
         }
