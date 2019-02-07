@@ -16,7 +16,6 @@ import com.symbol.emdk.barcode.StatusData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Base64;
 
 public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.DataListener, Scanner.StatusListener, BarcodeManager.ScannerConnectionListener, IBarcodeReaderManager {
 
