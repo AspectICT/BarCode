@@ -1,21 +1,3 @@
-Skip to content
- 
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
- @AspectICT Sign out
-2
-0 0 AspectICT/BarCode
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Insights  Settings
-BarCode/src/android/BarcodeReaderManager.java
-44746ad  9 days ago
-@AspectICT AspectICT Update BarcodeReaderManager.java
-@AspectICT @GerjanVlot
-      
-291 lines (251 sloc)  8.66 KB
 package com.plugin.barcode;
 
 import android.content.Context;
@@ -306,16 +288,3 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         }
     }
 }
-© 2019 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Press h to open a hovercard with more details.
