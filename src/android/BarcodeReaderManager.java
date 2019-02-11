@@ -13,9 +13,10 @@ import com.symbol.emdk.barcode.ScannerException;
 import com.symbol.emdk.barcode.ScannerInfo;
 import com.symbol.emdk.barcode.ScannerResults;
 import com.symbol.emdk.barcode.StatusData;
-import android.util.Base64;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Base64;
 
 public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.DataListener, Scanner.StatusListener, BarcodeManager.ScannerConnectionListener, IBarcodeReaderManager {
 
@@ -25,10 +26,9 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     private List<ScannerInfo> _deviceList = new ArrayList<ScannerInfo>();
     private IObserver _onReadyObserver;
     private int _deviceId = 0;
-    private int _defaultIndex = 0;
-    private String _triggerType = "hard";
     private boolean ready = false;
     private boolean _isScanning = false;
+    private String _triggerType;
 
 
     public BarcodeReaderManager(Context context) 
@@ -59,29 +59,16 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
 
     public void initializeScanner(String triggerType, int deviceId) 
     {
-        triggerType = triggerType.toLowerCase();
+        _triggerType = triggerType.toLowerCase();
         _deviceId = deviceId;
 
-        Log.d(getClass().getSimpleName(), "Scanner Initializing. TriggerType=" + triggerType + ", deviceId=" + deviceId);
+        Log.d(getClass().getSimpleName(), "Scanner Initializing. TriggerType=" + _triggerType + ", deviceId=" + deviceId);
 
         if (_scanner == null) 
         {
             if ((_deviceList != null) && (_deviceList.size() != 0)) 
             {
                 _scanner = _barcodeManager.getDevice(_deviceList.get(deviceId));
-
-                if(triggerType == "hard") 
-                {
-                    _scanner.triggerType = Scanner.TriggerType.HARD;
-                } 
-                else if(triggerType == "soft_once") 
-                {
-                    _scanner.triggerType = Scanner.TriggerType.SOFT_ONCE;
-                } 
-                else if(triggerType == "soft_always") 
-                {
-                    _scanner.triggerType = Scanner.TriggerType.SOFT_ALWAYS;
-                }
             } 
             else 
             {
@@ -162,9 +149,6 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                 int index = 0;
                 for (ScannerInfo scnInfo : _deviceList) {
                     friendlyNameList.add(new Device(index, scnInfo.getFriendlyName()));
-                    if (scnInfo.isDefaultScanner()) {
-                        _defaultIndex = index;
-                    }
                     index++;
                 }
             }
@@ -177,13 +161,20 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
         _isScanning = true;
         try 
         {
+            if ("hard".equals(_triggerType)) {
+                _scanner.triggerType = Scanner.TriggerType.HARD;
+            } else if ("soft_once".equals(_triggerType)) {
+                _scanner.triggerType = Scanner.TriggerType.SOFT_ONCE;
+            } else if ("soft_always".equals(_triggerType)) {
+                _scanner.triggerType = Scanner.TriggerType.SOFT_ALWAYS;
+            }
+
             ScannerConfig config = _scanner.getConfig();
 
-            // Dit is de parameter die ervoor zorgt dat barcode type Interleaved 2 of 5 enabled is, 
-            // dus geaccepteerd wordt door de scanner.
             config.decoderParams.i2of5.enabled = true;
 
             _scanner.setConfig(config);
+
 
             if (_scanner.isEnabled()) {
                 _scanner.read();
@@ -193,7 +184,7 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
             
             Log.d(getClass().getSimpleName(), "Started Scanning");   
         } 
-        catch (Exception e) 
+        catch (ScannerException e)
         {
             e.printStackTrace();
             throw e;
@@ -238,7 +229,6 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
     public void onConnectionChange(ScannerInfo scannerInfo, BarcodeManager.ConnectionState connectionState) {
         String scannerName = "";
         Log.d(getClass().getSimpleName(), "Connection Change: " + connectionState);
-        String statusExtScanner = connectionState.toString();
         String scannerNameExtScanner = scannerInfo.getFriendlyName();
 
         if (_deviceList.size() != 0) {
@@ -254,7 +244,6 @@ public class BarcodeReaderManager implements EMDKManager.EMDKListener, Scanner.D
                     deInitializeScanner();
                     break;
             }
-        } else {
         }
     }
 
