@@ -113,7 +113,7 @@ module.exports = {
     onScanResult: function() {
         var promise = new Promise();
         cordova.exec(function(res) {
-            promise.resolve(res);
+            promise.resolve(atob(res));
         }, function(ex) {
             promise.reject(ex);
         }, "BarcodePlugin", "onScanResult", []);
