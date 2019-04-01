@@ -26,7 +26,7 @@
     <source-file src="src/android/BarcodePlugin.java" target-dir="src/com/plugin/barcode/" />
 
     <config-file target="AndroidManifest.xml" parent="/manifest">
-      <uses-permission android:name="com.symbol.emdk.permission.EMDK" />
+      <uses-permission android:name="com.symbol.emdk.permission.EMDK" android:required="false" />
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
